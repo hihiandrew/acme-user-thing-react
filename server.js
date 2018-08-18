@@ -6,6 +6,7 @@ const db = new Sequelize('postgres://localhost:5432/acme-user-thing-react', {
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const path = require('path');
 
 const User = db.define('user', {
   name: {
@@ -98,6 +99,27 @@ app.get('/api/users', async (req, res, next) => {
   res.json(users);
 });
 
-app.get('/api/users/:id', (req, res, next) => {
-  res.json(`hi`);
+app.get('/api/users/:id', async (req, res, next) => {
+  const user = await User.findById(req.params.id, {
+    include: [
+      {
+        model: Own,
+        include: Thing,
+      },
+    ],
+  });
+  res.json(user);
 });
+
+app.use('/dist', express.static(path.join(__dirname, 'dist')));
+
+app.use('/', async (req, res, next) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+module.exports = {
+  db,
+  User,
+  Own,
+  Thing,
+};
