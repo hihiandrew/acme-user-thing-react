@@ -2,40 +2,45 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Axios from 'axios';
 
-const Things = ({ user }) => {
+const User = ({ user }) => {
   return user.owns.map(own => {
     return <li>{own.thing.name}</li>;
   });
 };
 
-const Users = ({ userList }) => {
+const AllUsers = ({ userList }) => {
   return userList.map(user => {
     return (
       <div className="userList">
         <h3>{user.name}</h3>
         <ul>
-          <Things key={user.id} user={user} />
+          <User key={user.id} user={user} />
         </ul>
       </div>
     );
   });
 };
 
-const UsersFiltered = ({ userList }) => {
-  return userList
-    .filter(user => {
-      return user.owns.length > 0 ? true : false;
-    })
-    .map(user => {
-      return (
-        <div className="userList">
-          <h3>{user.name}</h3>
-          <ul>
-            <Things key={user.id} user={user} />
-          </ul>
-        </div>
-      );
-    });
+const AllUsersFiltered = ({ userList }) => {
+  const newList = userList.filter(x => x.owns.length > 0);
+  return newList.map(user => {
+    return (
+      <div className="userList">
+        <h3>{user.name}</h3>
+        <ul>
+          <User key={user.id} user={user} />
+        </ul>
+      </div>
+    );
+  });
+};
+
+const FilterButton = ({ filterThings, filterUsers }) => {
+  return (
+    <button onClick={() => filterUsers()}>
+      {filterThings ? 'Show All Users' : 'Only Show Users With Things'}
+    </button>
+  );
 };
 
 class Main extends Component {
@@ -45,7 +50,7 @@ class Main extends Component {
       users: [],
       filterByThings: false,
     };
-    this.filter = this.filter.bind(this);
+    this.filterUsers = this.filterUsers.bind(this);
   }
 
   componentDidMount() {
@@ -54,15 +59,23 @@ class Main extends Component {
     });
   }
 
-  filter() {
-    this.setState(1 - this.statefilterByThings);
+  filterUsers() {
+    this.setState({ filterByThings: !this.state.filterByThings });
   }
 
   render() {
+    let PageView = this.state.filterByThings ? (
+      <AllUsersFiltered userList={this.state.users} />
+    ) : (
+      <AllUsers userList={this.state.users} />
+    );
     return (
       <div>
-        <Filter switch={this.state.filterByThings} />
-        <UsersFiltered userList={this.state.users} />
+        <FilterButton
+          filterThings={this.state.filterByThings}
+          filterUsers={this.filterUsers}
+        />
+        {PageView}
       </div>
     );
   }
