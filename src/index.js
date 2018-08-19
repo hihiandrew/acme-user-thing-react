@@ -3,35 +3,28 @@ import { render } from 'react-dom';
 import Axios from 'axios';
 
 const User = ({ user }) => {
-  return user.owns.map(own => {
-    return <li>{own.thing.name}</li>;
-  });
+  return (
+    <div className="userList">
+      <h3>{user.name}</h3>
+      <ul>
+        {user.owns.map(own => {
+          return <li key={own.id}>{own.thing.name}</li>;
+        })}
+      </ul>
+    </div>
+  );
 };
 
 const AllUsers = ({ userList }) => {
   return userList.map(user => {
-    return (
-      <div className="userList">
-        <h3>{user.name}</h3>
-        <ul>
-          <User key={user.id} user={user} />
-        </ul>
-      </div>
-    );
+    return <User user={user} key={user.id} />;
   });
 };
 
 const AllUsersFiltered = ({ userList }) => {
-  const newList = userList.filter(x => x.owns.length > 0);
+  const newList = userList.filter(user => user.owns.length > 0);
   return newList.map(user => {
-    return (
-      <div className="userList">
-        <h3>{user.name}</h3>
-        <ul>
-          <User key={user.id} user={user} />
-        </ul>
-      </div>
-    );
+    return <User user={user} key={user.id} />;
   });
 };
 
