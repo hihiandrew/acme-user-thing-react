@@ -1,0 +1,22 @@
+#all-users {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+#each-user {
+  display: flex;
+  border-style: solid;
+  border-color: black;
+  border-radius: 50%;
+}
+
+#btn {
+  display: flex;
+  background-color: gray;
+  border-style: solid;
+  border-color: black;
+}
+
+* {
+  background-color: green;
+}

@@ -4,7 +4,7 @@ import Axios from 'axios';
 
 const User = ({ user }) => {
   return (
-    <div className="userList">
+    <div className="each-user">
       <h3>{user.name}</h3>
       <ul>
         {user.owns.map(own => {
@@ -30,7 +30,7 @@ const AllUsersFiltered = ({ userList }) => {
 
 const FilterButton = ({ filterThings, filterUsers }) => {
   return (
-    <button onClick={() => filterUsers()}>
+    <button className="btn" onClick={() => filterUsers()}>
       {filterThings ? 'Show All Users' : 'Only Show Users With Things'}
     </button>
   );
@@ -58,9 +58,9 @@ class Main extends Component {
 
   render() {
     let PageView = this.state.filterByThings ? (
-      <AllUsersFiltered userList={this.state.users} />
+      <AllUsersFiltered className="all-users" userList={this.state.users} />
     ) : (
-      <AllUsers userList={this.state.users} />
+      <AllUsers className="all-users" userList={this.state.users} />
     );
     return (
       <div>

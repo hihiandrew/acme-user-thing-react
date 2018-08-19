@@ -111,6 +111,7 @@ app.get('/api/users/:id', async (req, res, next) => {
   res.json(user);
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
 
 app.use('/', async (req, res, next) => {
