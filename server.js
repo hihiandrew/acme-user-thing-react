@@ -1,7 +1,10 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize(process.env.DATABASE_URL, {
-  logging: false,
-});
+const db = new Sequelize(
+  process.env.DATABASE_URL || 'postgres://localhost:5432/acme-user-thing-react',
+  {
+    logging: false,
+  }
+);
 
 const express = require('express');
 const app = express();
